@@ -19,6 +19,11 @@ $data = mysqli_fetch_array($query);
         <input type="text" class="form-control" id="judul" name="judul" value="<?php echo $data['judul'] ?>">
     </div>
 
+    <div class="mb-3">
+        <label class="form-label">Deadline</label>
+        <input type="date" class="form-control" id="deadline" name="deadline" value="<?php echo $data['deadline'] ?>">
+    </div>
+
     <button type="submit" class="btn btn-primary">Simpan</button>
 
 </form>

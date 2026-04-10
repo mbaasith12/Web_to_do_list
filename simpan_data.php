@@ -1,13 +1,16 @@
 <?php
-// koneksi
 include('koneksi.php');
 
-// ambil data dari form tambah
 $judul = $_POST['judul'];
+$deadline = $_POST['deadline'];
 
-// simpan data ke dtabase
-$sql = "insert into list (judul) values ('$judul')";
-mysqli_query($koneksi, $sql) or die("Gagal SQL");
+if (empty($deadline)) {
+    $deadline_sql = "NULL";
+} else {
+    $deadline_sql = "'$deadline'";
+}
 
-// pindah halaman kalau udh done
+$sql = "insert into list (judul, deadline) values ('$judul', $deadline_sql)";
+mysqli_query($koneksi, $sql) or die("Gagal SQL: " . mysqli_error($koneksi));
+
 header('location:index.php');

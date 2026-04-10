@@ -33,6 +33,21 @@
             <div class="card mt-2">
               <div class="card-body">
                 <div class="row">
+                  <?php
+                  // Menampilkan Judul
+                  if ($data['status_selesai'] == 1) {
+                    echo "<s>" . $data['judul'] . "</s>";
+                  } else {
+                    echo $data['judul'];
+                  }
+
+                  // Menampilkan Deadline di bawah judul dengan teks kecil berwarna abu-abu/merah
+                  if (!empty($data['deadline'])) {
+                    // Mengubah format tanggal menjadi DD-MM-YYYY agar lebih enak dibaca
+                    $tanggal_tampil = date('d-m-Y', strtotime($data['deadline']));
+                    echo "<br><small class='text-danger'><ion-icon name='calendar-outline'></ion-icon> Deadline: $tanggal_tampil</small>";
+                  }
+                  ?>
                   <div class="col-md-9">
                     <?php
                     if ($data['status_selesai'] == 1) {

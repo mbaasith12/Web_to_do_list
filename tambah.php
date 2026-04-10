@@ -23,6 +23,11 @@
             <input type="text" class="form-control" id="judul" name="judul" autofocus>
           </div>
 
+          <div class="mb-3">
+            <label class="form-label">Deadline</label>
+            <input type="date" class="form-control" name="deadline" required>
+          </div>
+
           <button type="submit" class="btn btn-primary">Simpan</button>
           <a href="index.php" class="btn btn-danger">Batal</a>
         </form>
