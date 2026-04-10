@@ -13,7 +13,7 @@
   <section>
     <div class="container">
       <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-6 offset-md-3 mb-5 pb-5">
           <h1 class="text-center mb-3">Aplikasi To Do List</h1>
 
           <a href="tambah.php" class="btn-primary btn btn-sm mb-2">
@@ -22,12 +22,10 @@
 
           <?php
           include("koneksi.php");
-
-          // Ambil tanggal hari ini menggunakan PHP
           $hari_ini = date('Y-m-d');
 
-          // QUERY UTAMA: Hanya tampilkan tugas yang SUDAH SELESAI, atau DEADLINE MASIH NANTI/HARI INI, atau TIDAK PUNYA DEADLINE
-          $sql = "SELECT * FROM list WHERE status_selesai = 1 OR deadline >= '$hari_ini' OR deadline IS NULL ORDER BY id ASC";
+          // QUERY UTAMA: Belum Selesai (0) AND (Deadline masih nanti/hari ini OR tidak ada deadline)
+          $sql = "SELECT * FROM list WHERE status_selesai = 0 AND (deadline >= '$hari_ini' OR deadline IS NULL) ORDER BY id ASC";
           $query = mysqli_query($koneksi, $sql) or die("Gagal SQL");
 
           while ($data = mysqli_fetch_array($query)) {
@@ -35,24 +33,12 @@
             <div class="card mt-2">
               <div class="card-body">
                 <div class="row">
-
                   <div class="col-md-9">
                     <?php
-                    // 1. Menampilkan icon centang hijau jika tugas sudah selesai
-                    if ($data['status_selesai'] == 1) {
-                    ?>
-                      <ion-icon name="checkbox-outline" style="font-size:20px; position:relative; top:5px; color:green"></ion-icon>
-                    <?php } ?>
+                    // Menampilkan Judul
+                    echo $data['judul'];
 
-                    <?php
-                    // 2. Menampilkan Judul (dicoret jika selesai)
-                    if ($data['status_selesai'] == 1) {
-                      echo "<s>" . $data['judul'] . "</s>";
-                    } else {
-                      echo $data['judul'];
-                    }
-
-                    // 3. Menampilkan Deadline di bawah judul
+                    // Menampilkan Deadline di bawah judul
                     if (!empty($data['deadline'])) {
                       $tanggal_tampil = date('d-m-Y', strtotime($data['deadline']));
                       echo "<br><small class='text-danger'><ion-icon name='calendar-outline'></ion-icon> Deadline: $tanggal_tampil</small>";
@@ -64,16 +50,13 @@
                     <a href="set_selesai.php?id=<?php echo $data['id'] ?>" class="btn btn-success btn-sm">
                       <ion-icon name="checkmark-outline"></ion-icon>
                     </a>
-                    <?php if ($data['status_selesai'] == 0) { ?>
-                      <a href="#" class="btn btn-warning btn-sm btn-edit" data-id="<?php echo $data['id']; ?>">
-                        <ion-icon name="pencil-outline"></ion-icon>
-                      </a>
-                    <?php } ?>
+                    <a href="#" class="btn btn-warning btn-sm btn-edit" data-id="<?php echo $data['id']; ?>">
+                      <ion-icon name="pencil-outline"></ion-icon>
+                    </a>
                     <a href="hapus.php?id=<?php echo $data['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">
                       <ion-icon name="trash-outline"></ion-icon>
                     </a>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -85,36 +68,66 @@
     </div>
   </section>
 
-  <div style="position: fixed; bottom: 20px; right: 20px; width: 320px; max-height: 450px; overflow-y: auto; z-index: 1000;" class="bg-white border border-danger rounded shadow p-3">
-    <h6 class="text-danger fw-bold"><ion-icon name="warning-outline"></ion-icon> Tugas Terlewat</h6>
-    <hr>
+  <div style="position: fixed; bottom: 20px; left: 20px; width: 320px; max-height: 450px; overflow-y: auto; z-index: 1000;" class="bg-white border border-success rounded shadow p-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="text-success fw-bold m-0"><ion-icon name="checkbox-outline"></ion-icon> Selesai</h6>
+      <a href="hapus_semua_selesai.php" class="btn btn-sm btn-outline-danger py-0" style="font-size: 11px;" onclick="return confirm('Yakin ingin menghapus SEMUA tugas yang sudah selesai?')">Hapus Semua</a>
+    </div>
+    <hr class="mt-1">
+
     <?php
-    // QUERY KEDUA: Hanya ambil tugas yang BELUM SELESAI dan SUDAH LEWAT DEADLINE
+    // QUERY: Hanya ambil tugas yang SUDAH SELESAI
+    $sql_done = "SELECT * FROM list WHERE status_selesai = 1 ORDER BY id ASC";
+    $query_done = mysqli_query($koneksi, $sql_done);
+
+    if (mysqli_num_rows($query_done) > 0) {
+      while ($done = mysqli_fetch_array($query_done)) {
+    ?>
+        <div class="card mb-2 border-success">
+          <div class="card-body p-2">
+            <small class="fw-bold text-success"><s><?php echo $done['judul']; ?></s></small>
+            <?php if (!empty($done['deadline'])) { ?>
+              <br><small class="text-muted" style="font-size: 11px;">Deadline: <?php echo date('d-m-Y', strtotime($done['deadline'])); ?></small>
+            <?php } ?>
+            <a href="hapus.php?id=<?php echo $done['id'] ?>" class="float-end text-danger" style="font-size: 14px;" onclick="return confirm('Yakin ingin menghapus?')">
+              <ion-icon name="trash-outline"></ion-icon>
+            </a>
+          </div>
+        </div>
+    <?php
+      }
+    } else {
+      echo "<small class='text-muted d-block text-center'>Belum ada tugas selesai.</small>";
+    }
+    ?>
+  </div>
+
+  <div style="position: fixed; bottom: 20px; right: 20px; width: 320px; max-height: 450px; overflow-y: auto; z-index: 1000;" class="bg-white border border-danger rounded shadow p-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="text-danger fw-bold m-0"><ion-icon name="warning-outline"></ion-icon> Terlewat</h6>
+      <a href="hapus_semua_terlewat.php" class="btn btn-sm btn-outline-danger py-0" style="font-size: 11px;" onclick="return confirm('Yakin ingin menghapus SEMUA tugas terlewat beserta refleksinya?')">Hapus Semua</a>
+    </div>
+    <hr class="mt-1">
+
+    <?php
+    // QUERY: Hanya ambil tugas yang BELUM SELESAI dan SUDAH LEWAT DEADLINE
     $sql_missed = "SELECT * FROM list WHERE status_selesai = 0 AND deadline IS NOT NULL AND deadline < '$hari_ini' ORDER BY id ASC";
     $query_missed = mysqli_query($koneksi, $sql_missed);
 
-    // Jika ada tugas yang terlewat
     if (mysqli_num_rows($query_missed) > 0) {
       while ($missed = mysqli_fetch_array($query_missed)) {
     ?>
         <div class="card mb-2 border-danger">
           <div class="card-body p-2">
             <small class="fw-bold"><?php echo $missed['judul']; ?></small><br>
-            <small class="text-muted" style="font-size: 11px;">Terlewat sejak: <?php echo date('d-m-Y', strtotime($missed['deadline'])); ?></small>
+            <small class="text-muted" style="font-size: 11px;">Terlewat: <?php echo date('d-m-Y', strtotime($missed['deadline'])); ?></small>
 
             <form action="simpan_komentar.php" method="POST" class="mt-2">
               <input type="hidden" name="id" value="<?php echo $missed['id']; ?>">
-
-              <?php
-              // Jika belum ada komentar, tampilkan kotak input
-              if (empty($missed['komentar'])) {
-              ?>
+              <?php if (empty($missed['komentar'])) { ?>
                 <textarea name="komentar" class="form-control form-control-sm mb-1" placeholder="Kenapa terlewat? (Refleksi)" rows="2" required></textarea>
                 <button type="submit" class="btn btn-danger btn-sm w-100" style="font-size: 12px;">Simpan Refleksi</button>
-              <?php
-                // Jika sudah ada komentar, tampilkan komentarnya sebagai teks
-              } else {
-              ?>
+              <?php } else { ?>
                 <div class="bg-light p-1 rounded border mt-1" style="font-size: 11px;">
                   <strong class="text-secondary">Refleksiku:</strong><br>
                   <span><?php echo $missed['komentar']; ?></span>
@@ -126,7 +139,6 @@
     <?php
       }
     } else {
-      // Pesan jika tidak ada tugas yang terlewat
       echo "<small class='text-muted d-block text-center'>Hebat! Tidak ada tugas yang terlewat.</small>";
     }
     ?>
