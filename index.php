@@ -24,7 +24,6 @@
           include("koneksi.php");
           $hari_ini = date('Y-m-d');
 
-          // QUERY UTAMA: Belum Selesai (0) AND (Deadline masih nanti/hari ini OR tidak ada deadline)
           $sql = "SELECT * FROM list WHERE status_selesai = 0 AND (deadline >= '$hari_ini' OR deadline IS NULL) ORDER BY id ASC";
           $query = mysqli_query($koneksi, $sql) or die("Gagal SQL");
 
@@ -76,7 +75,6 @@
     <hr class="mt-1">
 
     <?php
-    // QUERY: Hanya ambil tugas yang SUDAH SELESAI
     $sql_done = "SELECT * FROM list WHERE status_selesai = 1 ORDER BY id ASC";
     $query_done = mysqli_query($koneksi, $sql_done);
 
@@ -110,7 +108,6 @@
     <hr class="mt-1">
 
     <?php
-    // QUERY: Hanya ambil tugas yang BELUM SELESAI dan SUDAH LEWAT DEADLINE
     $sql_missed = "SELECT * FROM list WHERE status_selesai = 0 AND deadline IS NOT NULL AND deadline < '$hari_ini' ORDER BY id ASC";
     $query_missed = mysqli_query($koneksi, $sql_missed);
 
