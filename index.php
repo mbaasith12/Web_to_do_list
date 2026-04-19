@@ -29,13 +29,14 @@
 
     body {
       /* PENGATURAN BACKGROUND AGAR TIDAK TERPOTONG */
-      background-image: url('1.png');
+      background-image: url('siang.png');
       background-size: 100% 100%;
       background-position: top center;
       background-attachment: fixed;
       background-repeat: no-repeat;
       background-color: #f8f9fa;
       min-height: 100vh;
+      transition: background-image 0.5s ease-in-out;
     }
 
     /* HEADER: Posisi tulisan judul di atas foto */
@@ -82,14 +83,21 @@
       border: none;
       border-radius: 12px;
     }
+
+    /* =========================================
+       MODE MALAM (Easter Egg)
+       ========================================= */
+    body.night-mode {
+      background-image: url('malam.png') !important;
+      /* Ganti '2.png' dengan nama foto malammu */
+    }
   </style>
 </head>
 
 <body>
 
   <header class="header-section">
-    <img src="logo.png" alt="Logo" class="logo-header">
-
+    <img src="logo.png" id="logoEasterEgg" class="logo-header" style="cursor: pointer;" alt="Logo">
     <h1 class="display-3 fw-bold">Aplikasi To Do List</h1>
   </header>
 
@@ -224,6 +232,31 @@
           });
       });
     });
+  </script>
+
+  <script>
+    // --- FITUR EASTER EGG SIANG/MALAM ---
+    const logoBtn = document.getElementById('logoEasterEgg');
+    const body = document.body;
+
+    // 1. Cek apakah sebelumnya web sedang dalam mode malam
+    if (localStorage.getItem('theme') === 'night') {
+      body.classList.add('night-mode');
+    }
+
+    // 2. Aksi ketika logo diklik
+    if (logoBtn) {
+      logoBtn.addEventListener('click', () => {
+        body.classList.toggle('night-mode');
+
+        // Simpan status agar tidak hilang saat refresh atau tambah tugas
+        if (body.classList.contains('night-mode')) {
+          localStorage.setItem('theme', 'night');
+        } else {
+          localStorage.setItem('theme', 'day');
+        }
+      });
+    }
   </script>
 </body>
 
