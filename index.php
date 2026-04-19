@@ -107,9 +107,9 @@
         <div class="col-md-6 offset-md-3">
 
           <div class="mb-3 d-flex justify-content-between">
-            <a href="tambah.php" class="btn btn-primary btn-sm shadow-sm">
+            <button type="button" class="btn btn-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahModal">
               <ion-icon name="add-outline"></ion-icon> Tambah Tugas
-            </a>
+            </button>
           </div>
 
           <?php
@@ -213,6 +213,33 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body" id="modal-body-edit"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="tambahModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Tambah Tugas Baru</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="simpan_data.php" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Nama Tugas</label>
+              <input type="text" name="judul" class="form-control" placeholder="Tulis tugasmu di sini..." required autofocus>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Deadline (Opsional)</label>
+              <input type="date" name="deadline" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary btn-sm">Simpan Tugas</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
