@@ -150,7 +150,7 @@
     </div>
   </section>
 
-  <div style="position: fixed; bottom: 20px; left: 20px; width: 280px; max-height: 300px; overflow-y: auto; z-index: 1000;" class="bg-white border border-success rounded shadow p-3">
+  <div style="position: fixed; bottom: 20px; left: 20px; width: 280px; max-height: 300px; overflow-y: auto; z-index: 1000; background-color: rgba(255, 255, 255, 0.75);" class="border border-success rounded shadow p-3">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h6 class="text-success fw-bold m-0 small">Selesai</h6>
       <a href="hapus_semua_selesai.php" class="btn btn-sm btn-outline-danger py-0" style="font-size: 9px;" onclick="return confirm('Hapus semua?')">Hapus Semua</a>
@@ -171,7 +171,7 @@
     ?>
   </div>
 
-  <div style="position: fixed; bottom: 20px; right: 20px; width: 280px; max-height: 300px; overflow-y: auto; z-index: 1000;" class="bg-white border border-danger rounded shadow p-3">
+  <div style="position: fixed; bottom: 20px; right: 20px; width: 280px; max-height: 300px; overflow-y: auto; z-index: 1000; background-color: rgba(255, 255, 255, 0.75);" class="border border-danger rounded shadow p-3">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h6 class="text-danger fw-bold m-0 small">Terlewat</h6>
       <a href="hapus_semua_terlewat.php" class="btn btn-sm btn-outline-danger py-0" style="font-size: 9px;" onclick="return confirm('Hapus semua?')">Hapus Semua</a>
