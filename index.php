@@ -142,7 +142,7 @@
             }
           } else {
             // Jika tugas utama kosong
-            echo "<div class='text-center p-4 bg-white rounded shadow-sm opacity-75'><small class='text-muted'>Selamat! Semua tugas sudah selesai :D</small></div>";
+            echo "<div class='text-center p-4 bg-white rounded shadow-sm opacity-75'><small class='text'>Selamat! Semua tugas sudah selesai :D</small></div>";
           }
           ?>
         </div>
