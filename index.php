@@ -9,17 +9,11 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    /* =========================================
-       MEMASANG FONT DARI FILE LOKAL
-       ========================================= */
     @font-face {
       font-family: 'Fontku';
-      /* Ini nama panggilan untuk font kamu, bebas dinamai apa saja */
       src: url('handwriting-black-draft_DEMO.otf');
-      /* Pastikan nama file di sini SAMA PERSIS dengan file aslinya (huruf besar/kecil ngaruh) */
     }
 
-    /* RESET HTML DAN BODY */
     html,
     body {
       height: 100%;
@@ -28,7 +22,6 @@
     }
 
     body {
-      /* PENGATURAN BACKGROUND AGAR TIDAK TERPOTONG */
       background-image: url('siang.png');
       background-size: 100% 100%;
       background-position: top center;
@@ -39,8 +32,6 @@
       transition: background-image 0.5s ease-in-out;
     }
 
-    /* HEADER: Posisi tulisan judul di atas foto */
-    /* HEADER: Container utama untuk logo dan judul */
     .header-section {
       height: 20vh;
       display: flex;
@@ -49,44 +40,32 @@
       color: white;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
       position: relative;
-      /* Penting agar logo bisa diposisikan terhadap header ini */
     }
 
-    /* PENGATURAN LOGO DI KIRI ATAS HEADER */
     .logo-header {
       position: absolute;
       top: 12px;
-      /* Jarak dari atas */
       left: 20px;
-      /* Jarak dari kiri */
       height: 122px;
-      /* Atur besar kecilnya logo di sini */
       width: auto;
       filter: brightness(1.3);
     }
 
-    /* Menerapkan font lokal ke judul Header */
     .header-section h1 {
       font-family: 'Fontku', sans-serif;
-      /* Memanggil nama font yang sudah dibuat di @font-face */
     }
 
-    /* MAIN CONTENT: Area List Tugas (Setelah garis putih di foto) */
     .main-content {
       padding-top: 20px;
       padding-bottom: 150px;
     }
 
-    /* Membuat card sedikit transparan agar background terlihat */
     .card {
       background-color: rgba(255, 255, 255, 0.85);
       border: none;
       border-radius: 12px;
     }
 
-    /* =========================================
-       MODE MALAM (Easter Egg)
-       ========================================= */
     body.night-mode {
       background-image: url('malam.png') !important;
       /* Ganti '2.png' dengan nama foto malammu */
@@ -116,7 +95,6 @@
           include("koneksi.php");
           $hari_ini = date('Y-m-d');
 
-          // AMBIL TUGAS AKTIF
           $sql = "SELECT * FROM list WHERE status_selesai = 0 AND (deadline >= '$hari_ini' OR deadline IS NULL) ORDER BY id ASC";
           $query = mysqli_query($koneksi, $sql) or die("Gagal SQL");
 
@@ -141,7 +119,6 @@
           <?php
             }
           } else {
-            // Jika tugas utama kosong
             echo "<div class='text-center p-4 bg-white rounded shadow-sm opacity-75'><small class='text'>Selamat! Semua tugas sudah selesai :D</small></div>";
           }
           ?>
@@ -165,7 +142,6 @@
         echo "<div class='card mb-2 border-success p-2 shadow-sm'><small class='text-success'><s>" . $done['judul'] . "</s></small></div>";
       }
     } else {
-      // BAGIAN YANG KAMU TANYAKAN (Muncul jika list kosong)
       echo "<small class='text-muted d-block text-center'>Belum ada tugas selesai.</small>";
     }
     ?>
@@ -199,7 +175,6 @@
     <?php
       }
     } else {
-      // BAGIAN YANG KAMU TANYAKAN (Muncul jika list kosong)
       echo "<small class='text-muted d-block text-center'>Hebat! Tidak ada tugas terlewat.</small>";
     }
     ?>
@@ -260,23 +235,18 @@
       });
     });
   </script>
-
   <script>
-    // --- FITUR EASTER EGG SIANG/MALAM ---
     const logoBtn = document.getElementById('logoEasterEgg');
     const body = document.body;
 
-    // 1. Cek apakah sebelumnya web sedang dalam mode malam
     if (localStorage.getItem('theme') === 'night') {
       body.classList.add('night-mode');
     }
 
-    // 2. Aksi ketika logo diklik
     if (logoBtn) {
       logoBtn.addEventListener('click', () => {
         body.classList.toggle('night-mode');
 
-        // Simpan status agar tidak hilang saat refresh atau tambah tugas
         if (body.classList.contains('night-mode')) {
           localStorage.setItem('theme', 'night');
         } else {
