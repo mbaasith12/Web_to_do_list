@@ -38,7 +38,7 @@ cd web_to_do_list
 
 1. Aktifkan MySQL server melalui kontrol panel lokal Anda (seperti XAMPP).
 2. Buka `phpMyAdmin` atau klien database pilihan Anda, lalu buat database baru dengan nama:
-```sql
+```
 db_app_to_do_list
 
 ```
@@ -66,8 +66,8 @@ $database = "db_app_to_do_list";
 ## Running the Application
 
 1. Pastikan Apache dan MySQL pada server lokal Anda (XAMPP) sudah berjalan.
-2. Buka peramban (browser) dan akses URL berikut:
-```text
+2. Buka browser dan akses URL berikut:
+```
 http://localhost/web_to_do_list/
 
 ```
